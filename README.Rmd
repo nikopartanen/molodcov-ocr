@@ -1,0 +1,61 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file - rmarkdown::render('README.Rmd', output_format = 'github_document', output_file = 'README.md') -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, include=FALSE}
+library(tidyverse)
+```
+
+## Molodcov GT
+
+This report accompanies the dataset Komi Molodcov Ground Truth, and attempts to evaluate the coverage and quality of the materials within it. The goal is to have there clear metrics for different OCR models. The data package attempts to take metadata seriously, so that it could be used also as one parameter in model evaluation.
+
+```{r metadata, echo=FALSE}
+
+url1 <- "http://fennougrica.kansalliskirjasto.fi/handle/10024/87597"
+book1 <- "Кыдзи да мый силосуйтны колхозъяслы"
+  
+metadata <- tribble(
+  ~page,                      ~set,    ~handle, ~source, ~author, ~translator,
+  "kpv_3-1691_1931_0005.tif", "train_1", url1, book1, "Гиннов, В." , "Шеболкин Павел Андреевич", 
+  "kpv_3-1691_1931_0006.tif", "train_1", url1, book1, "Гиннов, В." , "Шеболкин Павел Андреевич",
+  "kpv_3-1691_1931_0007.tif", "train_2", url1, book1, "Гиннов, В." , "Шеболкин Павел Андреевич",
+  "kpv_3-1691_1931_0008.tif", "train_2", url1, book1, "Гиннов, В." , "Шеболкин Павел Андреевич",
+  "kpv_3-1691_1931_0009.tif", "train_3", url1, book1, "Гиннов, В." , "Шеболкин Павел Андреевич",
+  "kpv_3-1691_1931_0010.tif", "train_3", url1, book1, "Гиннов, В." , "Шеболкин Павел Андреевич")
+
+metadata %>% knitr::kable()
+```
+
+```{r read_lines, echo=FALSE}
+gt <- c(dir("train_1", pattern = "*.gt.txt", recursive = TRUE, full.names = TRUE),
+  dir("train_2", pattern = "*.gt.txt", recursive = TRUE, full.names = TRUE),
+  dir("train_3", pattern = "*.gt.txt", recursive = TRUE, full.names = TRUE)) %>%
+  map_df(~ {tibble(file = .x,
+                   text = read_lines(.x))})
+
+```
+
+The Ground Truth contains at the moment `r nrow(gt)` lines.
+
+## Rare letters
+
+Following letters occur only 3 times or less.
+
+```{r plot_characters, echo=FALSE}
+gt %>%
+  mutate(character = str_split(text, "")) %>%
+  unnest(character) %>%
+  count(character) %>%
+  arrange(n) %>%
+  filter(n <= 3) %>% knitr::kable()
+
+```
+
+
