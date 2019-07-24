@@ -3,12 +3,12 @@
 
 ## Molodcov GT
 
-This report accompanies the dataset Komi Molodcov Ground Truth, and
-attempts to evaluate the coverage and quality of the materials within
-it. The goal is to have there clear metrics for different OCR models.
-The data package attempts to take metadata seriously, so that it could
-be used also as one parameter in model
-evaluation.
+This repository contains a Ground Truth dataset for Komi Molodcov
+orthography, and attempts to evaluate the coverage and quality of the
+materials within it. The goal is to have there clear metrics for
+different OCR models. It is intended be used in combination with other
+Ground Truth package that contain texts in this
+orthography.
 
 | page                        | set      | handle                                                       | source                              | author     | translator               |
 | :-------------------------- | :------- | :----------------------------------------------------------- | :---------------------------------- | :--------- | :----------------------- |
